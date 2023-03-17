@@ -161,9 +161,9 @@ states_10_bar.update_traces(marker={"color":'#75b56d'})
 col1.write(states_10_bar)
 
 #graph CSA's with best transit proximity
-transit= walkability_df.groupby('CSA_Name')
+transit= walkability_df.groupby('CSA_Name', as_index=False)
 transit= transit.agg({'ranked_transit_proximity':'mean',
-                        'population':'sum'}).sort_values('ranked_transit_proximity').sort_values('ranked_transit_proximity',ascending=False)
+                        'population':'sum'}).sort_values('ranked_transit_proximity',ascending=False)
 transit= transit[transit['population'] >= 1000000].head(10)
 
 transit_graph= px.bar(transit, x='CSA_Name', y='ranked_transit_proximity',
