@@ -1,1 +1,0 @@
-# National_Walkability_App
