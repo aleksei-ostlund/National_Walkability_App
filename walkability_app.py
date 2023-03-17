@@ -76,7 +76,8 @@ pct_walkable['walkable_population'] = pct_walkable['walkable_population'].astype
 pct_walkable= pct_walkable.sort_values('STATE', ascending=False)
 
 pct_walkable_graph= px.bar(pct_walkable, x='walkable_population_pct', y='STATE', height=1100, width=600,
-                           title='Percent of population classified as living in "most walkable" blocks')
+                           title='Percent of population classified as living in "most walkable" blocks',
+                           template='plotly_dark',)
 pct_walkable_graph.update_layout(xaxis_title="Percent of population with walk index above 15.25")
 pct_walkable_graph.update_traces(marker={"color":'#75b56d'})
 pct_walkable_graph.update_layout(yaxis_title='State')
@@ -167,5 +168,6 @@ transit= transit.agg({'ranked_transit_proximity':'mean',
 transit= transit[transit['population'] >= 1000000].head(10)
 
 transit_graph= px.bar(transit, x='CSA_Name', y='ranked_transit_proximity',
-                           title='Average transit proximity score by CSA')
+                           title='Average transit proximity score by CSA',
+                           template="plotly_dark")
 col2.write(transit_graph)
