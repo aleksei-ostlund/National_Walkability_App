@@ -97,19 +97,11 @@ map_fig = px.choropleth(walkability_df,
                         color_continuous_scale="algae",
                         range_color=(0, 20),
                         scope="usa",
-<<<<<<< HEAD
                         labels={'NatWalkInd':'National Walk Index Score'}
                         )
 map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 map_fig.update_layout(geo=dict(bgcolor= 'rgba(0,0,0,0)'))
 col2.write(map_fig)
-=======
-                        labels={'NatWalkInd':'National Walk Index Score'},
-                        )
-map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-map_fig.update_layout(geo=dict(bgcolor= 'rgba(0,0,0,0)'))
-col2.write(map_fig, use_container_width=True)
->>>>>>> c9ea6ab02203be454b7c80a1e8dde8c055f5d756
 
 #write graph that shows the most walkable counties for selected states
 def graph_most_walkable_counties(state):
@@ -152,11 +144,7 @@ states_list= sorted(walkability_df['STATE'].unique())
 state_selections = col2.selectbox('Select a state to see its most walkable counties in the graph below',
                                   states_list)
 
-<<<<<<< HEAD
 col2.write(graph_most_walkable_counties(state_selections))
-=======
-col2.write(graph_most_walkable_counties(state_selections),use_container_width=True)
->>>>>>> c9ea6ab02203be454b7c80a1e8dde8c055f5d756
 
 #write graph of top states on average
 states_10_bar= px.bar(states_10, x='Avg NatWalkInd', y='STATE', orientation='h',
@@ -172,14 +160,12 @@ states_10_bar.add_vline(x=nationwide_mean, line_width=3, line_dash="dash", line_
 states_10_bar.update_traces(marker={"color":'#75b56d'})
 col1.write(states_10_bar)
 
-#graph CBSA's with the best transport links
-<<<<<<< HEAD
-cbsa_transit= walkability_df.groupby('CBSA_Name', as_index=False).agg({'transit_proximity':'mean'})
-cbsa_transit.sort_values('transit_proximity', inplace=True)
-cbsa_transit= cbsa_transit.head(10)
-cbsa_transit_graph= px.bar(cbsa_transit, x='CBSA_Name', y='transit_proximity',
-                           title='Average distance (meters) to transit stop by CBSA')
-col2.write(cbsa_transit_graph)
-=======
-# walkability_df.groupby('CBSA_Name').agg({'transit_proximity'})
->>>>>>> c9ea6ab02203be454b7c80a1e8dde8c055f5d756
+#graph CSA's with best transit proximity
+transit= walkability_df.groupby('CSA_Name')
+transit= transit.agg({'ranked_transit_proximity':'mean',
+                        'population':'sum'}).sort_values('ranked_transit_proximity').sort_values('ranked_transit_proximity',ascending=False)
+transit= transit[transit['population'] >= 1000000].head(10)
+
+transit_graph= px.bar(transit, x='CSA_Name', y='ranked_transit_proximity',
+                           title='Average transit proximity score by CSA')
+col2.write(transit_graph)
