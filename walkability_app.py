@@ -167,7 +167,21 @@ transit= transit.agg({'ranked_transit_proximity':'mean',
                         'population':'sum'}).sort_values('ranked_transit_proximity',ascending=False)
 transit= transit[transit['population'] >= 1000000].head(10)
 
-transit_graph= px.bar(transit, x='CSA_Name', y='ranked_transit_proximity',
-                           title='Average transit proximity score by CSA',
-                           template="plotly_dark")
+transit_graph= px.bar(transit, y='CSA_Name', x='ranked_transit_proximity',
+                           title='Average transit proximity score by combined statistical area',
+                           template="plotly_dark",
+                           height=485)
+transit_graph.update_layout(xaxis_title="Average transit proximity score",
+                            yaxis_title="Combined statistical area")
+transit_graph.update_traces(marker={"color":'#96fad5'})
+
 col2.write(transit_graph)
+
+# transit_map = px.scatter_geo(walkability_df, locations="SCFP",
+#                      color="CSA_Name", # which column to use to set the color of markers
+#                      hover_name="COUNTY", # column added to hover information
+#                      size="ranked_transit_proximity", # size of markers
+#                      projection="natural earth")
+# transit_map.update_layout(geo_scope="usa")
+
+# col2.write(transit_map)
